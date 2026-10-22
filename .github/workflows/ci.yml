@@ -1,0 +1,28 @@
+
+name: Website CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check website file
+        run: test -s index.html
+
+      - name: Validate HTML structure
+        run: |
+          grep -qi '<!DOCTYPE html>' index.html
+          grep -qi '<html' index.html
+          grep -qi '</html>' index.html
+
+      - name: Build status
+        run: echo "Website validation passed!"
